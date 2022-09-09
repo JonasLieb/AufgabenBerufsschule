@@ -8,28 +8,52 @@ import javax.swing.JPanel;
 
 import main.java.jol.aufgaben.arrays.zusatz.util.Position;
 
+/**
+ * A JPanel configured to be used in the 'game of life'. Contains and controlls
+ * all the cells (the actual 'playground' -> 'Spielwiese')
+ * 
+ * @author Jonas Lieben
+ *
+ */
 public class CellPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private static final int STANDARD_SIZE = 100;
 	private static final int GAME_START_ALIVE_CELLS_COUNT = 1000;
+	private final int sideLength;
+	private final int aliveCellsOnGameStart;
+
 	private Cell[][] cells;
 
-	public CellPanel(int sideLength) {
+	/**
+	 * constructor
+	 * 
+	 * @param sideLength the sidelength of the field
+	 */
+	public CellPanel(int sideLength, int aliveCellsOnGameStart) {
 		if (sideLength <= 0)
 			sideLength = STANDARD_SIZE;
+		if (aliveCellsOnGameStart <= 0)
+			aliveCellsOnGameStart = GAME_START_ALIVE_CELLS_COUNT;
+		this.sideLength = sideLength;
+		this.aliveCellsOnGameStart = aliveCellsOnGameStart;
 		cells = new Cell[sideLength][sideLength];
-		initField(sideLength);
-		initGui(sideLength);
+		initField();
+		initGui();
 	}
 
-	private void initField(int sideLength) {
-		// 8 true-Zellen ermitteln:
+	/**
+	 * initializes the field with a size of sidelength * sidelength
+	 * 
+	 * @param sideLength the sidelength of the field
+	 */
+	private void initField() {
+		// determine the cells that are alive at the games beginning
 		ArrayList<Position> list = new ArrayList<Position>();
 		int x;
 		int y;
 		Position p;
-		while (list.size() < Math.min(GAME_START_ALIVE_CELLS_COUNT, Math.pow(sideLength, 2))) {
+		while (list.size() < Math.min(aliveCellsOnGameStart, Math.pow(sideLength, 2))) {
 			x = ThreadLocalRandom.current().nextInt(0, sideLength);
 			y = ThreadLocalRandom.current().nextInt(0, sideLength);
 			p = new Position(x, y);
@@ -37,7 +61,7 @@ public class CellPanel extends JPanel {
 				list.add(p);
 		}
 
-		// echtes Füllen unseres Spielfeldes
+		// actually filling our field
 		Position currentPos;
 		for (int curY = 0; curY < cells.length; curY++) {
 			for (int curX = 0; curX < cells.length; curX++) {
@@ -51,7 +75,12 @@ public class CellPanel extends JPanel {
 		}
 	}
 
-	private void initGui(int sideLength) {
+	/**
+	 * builds the gui (in this case we do only add some cells to the field)
+	 * 
+	 * @param sideLength
+	 */
+	private void initGui() {
 		this.setLayout(new GridLayout(sideLength, sideLength));
 		for (int curY = 0; curY < cells.length; curY++) {
 			for (int curX = 0; curX < cells.length; curX++) {
@@ -60,6 +89,9 @@ public class CellPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * will force every cell to update its state
+	 */
 	public void updateCells() {
 		// Zellen auf Basis des Feldes aktualisieren
 		Cell[][] cellsKopie = cells.clone();

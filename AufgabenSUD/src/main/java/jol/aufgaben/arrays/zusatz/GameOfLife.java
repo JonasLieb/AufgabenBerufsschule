@@ -26,20 +26,39 @@ public class GameOfLife extends JFrame {
 	private Timer timer;
 	private TimerTask task;
 
+	/**
+	 * Start method
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
-		GameOfLife g = new GameOfLife(100);
+		GameOfLife g = new GameOfLife(100, 1000);
 		g.setVisible(true);
 	}
 
-	public GameOfLife(int sideLength) {
-		initGui(sideLength);
+	/**
+	 * constructor
+	 * 
+	 * @param sideLength            the fields width and height
+	 * @param aliveCellsOnGameStart the count of cells that should be alive when
+	 *                              starting the game
+	 */
+	public GameOfLife(int sideLength, int aliveCellsOnGameStart) {
+		initGui(sideLength, aliveCellsOnGameStart);
 	}
 
-	private void initGui(int sideLength) {
+	/**
+	 * builds the gui
+	 * 
+	 * @param sideLength            the fields width and height
+	 * @param aliveCellsOnGameStart the count of cells that should be alive when
+	 *                              starting the game
+	 */
+	private void initGui(int sideLength, int aliveCellsOnGameStart) {
 		infoLabel1 = new JLabel("Press 'e' to show the next generation of cells");
 		infoLabel2 = new JLabel("Press 'p' to play or pause the game");
 
-		cellPanel = new CellPanel(sideLength);
+		cellPanel = new CellPanel(sideLength, aliveCellsOnGameStart);
 
 		infoPanel = new JPanel();
 		infoPanel.setLayout(new GridLayout(0, 1));
@@ -59,6 +78,11 @@ public class GameOfLife extends JFrame {
 		this.addKeyListener(getKeyListener());
 	}
 
+	/**
+	 * handles any key-input we have to work with
+	 * 
+	 * @return the games keylistener
+	 */
 	private KeyAdapter getKeyListener() {
 		return new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
@@ -70,6 +94,9 @@ public class GameOfLife extends JFrame {
 		};
 	}
 
+	/**
+	 * plays or pauses the game
+	 */
 	private void playPause() {
 		play = !play;
 		if (play) {
@@ -87,6 +114,9 @@ public class GameOfLife extends JFrame {
 		}
 	}
 
+	/**
+	 * will show the games next round
+	 */
 	public void nextRound() {
 		cellPanel.updateCells();
 		repaint();

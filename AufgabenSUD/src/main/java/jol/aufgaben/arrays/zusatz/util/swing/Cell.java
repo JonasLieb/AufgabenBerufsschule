@@ -4,6 +4,12 @@ import java.awt.Color;
 
 import javax.swing.JPanel;
 
+/**
+ * This class imitates a single cell in the "game of life"
+ * 
+ * @author Jonas Lieben
+ *
+ */
 public class Cell extends JPanel {
 	private static final long serialVersionUID = 1L;
 
@@ -14,6 +20,13 @@ public class Cell extends JPanel {
 	private static final int LOWER_LIVING_LIMIT = 2;
 	private static final int UPPER_LIVING_LIMIT = 3;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param alive determins if the cell is alive or dead
+	 * @param x     the positions x-coordinate of this cell
+	 * @param ythe  positions y-coordinate of this cell
+	 */
 	public Cell(boolean alive, int x, int y) {
 		this.posX = x;
 		this.posY = y;
@@ -21,6 +34,11 @@ public class Cell extends JPanel {
 		setState(alive);
 	}
 
+	/**
+	 * changes the cells state to the given boolean (true = alive, false = dead)
+	 * 
+	 * @param alive the boolean that determins if the cell is alive or dead
+	 */
 	private void setState(boolean alive) {
 		if (alive)
 			setBackground(ALIVE_BACKGROUND);
@@ -28,14 +46,23 @@ public class Cell extends JPanel {
 			setBackground(DEAD_BACKGROUND);
 	}
 
+	/**
+	 * provides information about the cells current state (dead/alive)
+	 * 
+	 * @return if the cell is alive
+	 */
 	public boolean isAlive() {
 		return getBackground().equals(ALIVE_BACKGROUND);
 	}
 
+	/**
+	 * updates the cells state by watching the neighbour-cells
+	 * 
+	 * @param field the games field
+	 */
 	public void updateState(Cell[][] field) {
-		// TODO: Nachbarkonstellationen durchgehen und auf dieser Basis die Zelle ändern
 		boolean nextState = false;
-		int livingNeighbours = getAliveNeighboursCount(field, posX, posY);
+		int livingNeighbours = getAliveNeighboursCount(field);
 
 		if (isAlive()) {
 			if (livingNeighbours < LOWER_LIVING_LIMIT || livingNeighbours > UPPER_LIVING_LIMIT) {
@@ -45,23 +72,23 @@ public class Cell extends JPanel {
 				// Gute bedingungen:
 				nextState = true;
 			}
-		}
-
-		if (!isAlive()) {
+		} else {
 			if (livingNeighbours == 3)
 				nextState = true;
 		}
-
 		setState(nextState);
 	}
 
-	private int getAliveNeighboursCount(Cell[][] field, int x, int y) {
-		if (x == 0 && y == 38)
-			System.out.println("");
-
-		int minX = x - 1;
+	/**
+	 * determins the count of this cells living neighbours
+	 * 
+	 * @param field the games field
+	 * @return the count of living cells right next to this
+	 */
+	private int getAliveNeighboursCount(Cell[][] field) {
+		int minX = posX - 1;
 		int maxX = minX + 3;
-		int minY = y - 1;
+		int minY = posY - 1;
 		int maxY = minY + 3;
 		int count = 0;
 
@@ -77,7 +104,7 @@ public class Cell extends JPanel {
 
 		for (int curY = minY; curY < maxY; curY++) {
 			for (int curX = minX; curX < maxX; curX++) {
-				if (field[curY][curX].isAlive() && (curX != x || curY != y)) {
+				if (field[curY][curX].isAlive() && (curX != posX || curY != posY)) {
 					count++;
 				}
 			}
