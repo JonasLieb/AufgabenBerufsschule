@@ -1,4 +1,4 @@
-package main.java.jol.aufgabe6;
+package main.java.jol.aufgaben.verzweigungen;
 
 import main.java.jol.util.Utilities;
 
