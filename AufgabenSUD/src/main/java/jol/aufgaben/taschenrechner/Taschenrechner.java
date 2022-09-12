@@ -9,8 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import main.java.jol.util.swing.StyledButton;
-import main.java.jol.util.swing.StyledLabel;
+import main.java.jol.aufgaben.taschenrechner.util.swing.StyledButton;
+import main.java.jol.aufgaben.taschenrechner.util.swing.StyledLabel;
 
 public class Taschenrechner extends JFrame {
 
