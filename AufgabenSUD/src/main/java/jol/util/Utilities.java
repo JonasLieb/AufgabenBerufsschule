@@ -80,6 +80,32 @@ public class Utilities {
 	}
 
 	/**
+	 * will get an integer from the input
+	 * 
+	 * @param commandPrompt        first shown message
+	 * @param commandPromptOnError shown message if the input was invalid
+	 * @return
+	 */
+	public static int getInt(String commandPrompt, String commandPromptOnError, int min, int max) {
+		String msg;
+		for (int i = 0;; i++) {
+			if (i == 0)
+				msg = commandPrompt;
+			else
+				msg = commandPromptOnError;
+			try {
+				int ret = Integer.parseInt(JOptionPane.showInputDialog(msg));
+				if (ret <= max && ret >= min) {
+					return ret;
+				}
+				continue;
+			} catch (NumberFormatException e) {
+				continue;
+			}
+		}
+	}
+
+	/**
 	 * will get a double from the input
 	 * 
 	 * @param commandPrompt        first shown message
